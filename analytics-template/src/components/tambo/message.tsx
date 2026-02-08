@@ -556,7 +556,7 @@ const SamplingSubThread = ({
                   className={cn(
                     "whitespace-pre-wrap",
                     m.role === "assistant" &&
-                      "bg-muted/50 rounded-md p-2 inline-block w-fit",
+                    "bg-muted/50 rounded-md p-2 inline-block w-fit",
                   )}
                 >
                   {getSafeContent(m.content)}
@@ -877,7 +877,7 @@ function extractComponentInfo(renderedComponent: React.ReactNode): {
  * Only Graph components should be draggable to the canvas
  */
 function isDraggableComponent(componentType: string): boolean {
-  return componentType === "Graph";
+  return componentType === "Graph" || componentType === "Planets" || componentType === "PlanetGame" || componentType === "SpaceQuiz" || componentType === "SpaceFlashCards" || componentType === "CelestialCalendar";
 }
 
 /**
@@ -935,10 +935,17 @@ const MessageRenderedComponentArea = React.forwardRef<
     [componentType, componentProps],
   );
 
+  const [isVisible, setIsVisible] = React.useState(true);
+
+  const handleDragEnd = React.useCallback(() => {
+    setIsVisible(false);
+  }, []);
+
   if (
     !message.renderedComponent ||
     role !== "assistant" ||
-    message.isCancelled
+    message.isCancelled ||
+    !isVisible
   ) {
     return null;
   }
@@ -966,6 +973,7 @@ const MessageRenderedComponentArea = React.forwardRef<
               className="w-full pt-2 px-2 cursor-move"
               draggable={true}
               onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
             >
               {message.renderedComponent}
             </div>

@@ -12,7 +12,7 @@ import { useSyncExternalStore } from "react";
 const STORAGE_KEY = "tambo-demo-context-key";
 
 function getContextKey(): string {
-   //this is the src of truth -> one uuid per browser storage but since the uuid is stored in the browser itself and react doesnt know it, so find it throw built in event listner
+  //this is the src of truth -> one uuid per browser storage but since the uuid is stored in the browser itself and react doesnt know it, so find it throw built in event listner
   let key = localStorage.getItem(STORAGE_KEY);
   if (!key) {
     key = window.crypto.randomUUID();
@@ -62,6 +62,8 @@ function useContextKey(): string | null { //custom-react-hook, called on render
 //   if(typeof window == "undefined") return "";
 */
 
+import { JourneyLogger } from "@/components/tambo/JourneyLogger";
+
 export default function Home() {
   const mcpServers = useMcpServers();
   const contextKey = useContextKey();
@@ -82,6 +84,7 @@ export default function Home() {
         contextKey={contextKey}
       >
         <TamboMcpProvider>
+          <JourneyLogger />
           <div className="flex h-full overflow-hidden">
             <div className="flex-1 overflow-hidden">
               <MessageThreadFull />

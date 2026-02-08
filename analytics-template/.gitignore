@@ -42,3 +42,9 @@ next-env.d.ts
 
 # claude code local settings
 .claude/settings.local.json
+
+# Large Assets
+*.glb
+*.gltf
+public/models/
+*.crdownload

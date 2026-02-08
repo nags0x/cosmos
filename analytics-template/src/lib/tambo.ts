@@ -12,6 +12,12 @@ import { Graph, graphSchema } from "@/components/tambo/graph";
 import { SelectForm, selectFormSchema } from "@/components/tambo/select-form";
 import type { TamboComponent } from "@tambo-ai/react";
 import { TamboTool } from "@tambo-ai/react";
+import { planetSchema } from "@/components/celestials/planetSchema";
+import { Planets } from "@/components/celestials/Planets";
+import { PlanetGame } from "@/components/celestials/PlanetGame";
+import { SpaceQuiz } from "@/components/quiz/SpaceQuiz";
+import { SpaceFlashCards } from "@/components/flashcards/SpaceFlashCards";
+import { CelestialCalendar } from "@/components/calendar/CelestialCalendar";
 import { z } from "zod";
 import {
   getSalesData,
@@ -106,5 +112,59 @@ export const components: TamboComponent[] = [
     component: SelectForm,
     propsSchema: selectFormSchema,
   },
-  // Add more components here
+  {
+    name: "Planets",
+    description:
+      "Use this to render a single 3D planet for viewing. Use this when the user asks to 'see' or 'show' a specific planet (e.g. 'Show me Mars').",
+    component: Planets,
+    propsSchema: planetSchema,
+  },
+  {
+    name: "PlanetGame",
+    description: "Use this to start the interactive solar system builder game. The user drags planets from a tray to their orbits. Use this when the user mentions 'game', 'play', 'start', or 'solar system builder'.",
+    component: PlanetGame,
+    propsSchema: z.object({}),
+  },
+  {
+    name: "SpaceQuiz",
+    description: "Use this when the user asks for a 'quiz', 'trivia', or 'test' about space, planets, or the solar system. You can optionally provide a configuration to start a specific quiz immediately.",
+    component: SpaceQuiz,
+    propsSchema: z.object({
+      initialConfig: z.object({
+        difficulty: z.enum(['easy', 'medium', 'hard']),
+        category: z.string(),
+        questionCount: z.number().min(1).max(15)
+      }).optional()
+    }),
+  },
+  {
+    name: "SpaceFlashCards",
+    description: "Use this when the user asks for 'flashcards', 'study mode', or 'learn' about space terms. This tool helps users memorize facts using spaced repetition.",
+    component: SpaceFlashCards,
+    propsSchema: z.object({
+      initialConfig: z.object({
+        topic: z.string(),
+        difficulty: z.enum(['beginner', 'intermediate', 'expert']),
+        count: z.number().optional()
+      }).optional()
+    })
+  },
+  {
+    name: "CelestialCalendar",
+    description: "Use this when the user asks for a 'calendar', 'schedule', 'events', or dates of celestial phenomena (like full moons, eclipses, meteor showers). It displays a list of events that users can add to their Google Calendar.",
+    component: CelestialCalendar,
+    propsSchema: z.object({
+      title: z.string().optional(),
+      initialEvents: z.array(z.object({
+        id: z.string(),
+        date: z.string().describe("YYYY-MM-DD"),
+        title: z.string(),
+        description: z.string().optional(),
+        type: z.enum(['moon', 'eclipse', 'meteor', 'planet', 'launch']),
+        startTime: z.string().optional(),
+        endTime: z.string().optional(),
+        location: z.string().optional()
+      })).optional()
+    })
+  }
 ];
