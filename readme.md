@@ -1,5 +1,8 @@
 # Cosmos
-[Watch Demo Video](main.mp4)
+
+
+https://github.com/user-attachments/assets/43f82525-5db9-453e-ba8b-2ed288df3904
+
 
 Ik hacks are filled with ai fluff, but this one is different
 It has taste, something which ai can't replicate but humans need to hit
