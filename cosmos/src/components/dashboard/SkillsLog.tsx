@@ -34,7 +34,7 @@ export function SkillsLog({ skills }: SkillsLogProps) {
                             className="w-full max-w-2xl bg-card border border-border rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
                         >
                             <div className="flex items-center justify-between p-4 border-b border-border bg-muted/30">
-                                <h3 className="text-sm font-medium text-foreground">Ship's Log (AGENTS.md)</h3>
+                                <h3 className="text-sm font-medium text-foreground">Ship&apos;s Log (AGENTS.md)</h3>
                                 <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                                     <X className="w-4 h-4" />
                                 </button>

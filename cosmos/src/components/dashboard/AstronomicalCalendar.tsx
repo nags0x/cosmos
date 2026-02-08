@@ -30,12 +30,12 @@ export function AstronomicalCalendar() {
                 const data = await getDailySpaceFact();
                 // Handle potential legacy string response (if cache weirdness) or new object
                 if (typeof data === 'string') {
-                    setFactData({ text: data, source: 'archive' });
+                    setFactData({ text: data as string, source: 'archive', model: 'legacy' });
                 } else {
-                    setFactData(data as any);
+                    setFactData({ ...data, model: data.model || 'unknown' } as { text: string; source: string; model: string });
                 }
             } catch (error) {
-                setFactData({ text: "Communication array offline. Using cached data.", source: "error" });
+                setFactData({ text: "Communication array offline. Using cached data.", source: "error", model: "offline" });
             } finally {
                 setIsLoading(false);
             }
@@ -111,7 +111,7 @@ export function AstronomicalCalendar() {
                     animate={{ opacity: 1 }}
                     className="text-xs text-[#f0f0f0]/60 leading-relaxed italic"
                 >
-                    "{factData.text}"
+                    &quot;{factData.text}&quot;
                 </motion.p>
             </div>
 

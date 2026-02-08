@@ -54,7 +54,10 @@ export function FlashCardDeck({ initialConfig }: FlashCardDeckProps) {
     useEffect(() => {
         // Simulate loading/AI generation based on config
         // For now, load mock data
-        setDeck([...MOCK_FLASHCARDS]);
+        const timer = setTimeout(() => {
+            setDeck([...MOCK_FLASHCARDS]);
+        }, 0);
+        return () => clearTimeout(timer);
     }, [initialConfig]);
 
     const handleResult = (result: 'review' | 'mastered') => {

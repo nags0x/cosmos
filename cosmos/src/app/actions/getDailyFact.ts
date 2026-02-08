@@ -52,8 +52,8 @@ async function fetchFactFromGemini() {
         for (const modelName of models) {
             try {
                 return await generate(modelName);
-            } catch (error: any) {
-                console.warn(`${modelName} failed:`, error.message);
+            } catch (error: unknown) {
+                console.warn(`${modelName} failed:`, (error as Error).message);
                 continue;
             }
         }
@@ -112,13 +112,13 @@ export async function testGeminiConnection() {
 
             if (modelsData.models) {
                 availableModelsList = modelsData.models
-                    .filter((m: any) => m.supportedGenerationMethods?.includes("generateContent"))
-                    .map((m: any) => m.name.replace("models/", ""))
+                    .filter((m: { name: string; supportedGenerationMethods?: string[] }) => m.supportedGenerationMethods?.includes("generateContent"))
+                    .map((m: { name: string }) => m.name.replace("models/", ""))
                     .join(", ");
             }
-        } catch (listError: any) {
+        } catch (listError: unknown) {
             console.warn("Failed to list models:", listError);
-            availableModelsList = "Failed to fetch list (" + listError.message + ")";
+            availableModelsList = "Failed to fetch list (" + (listError as Error).message + ")";
         }
 
         // Step 2: Test Generation with Gemini 2.5 Flash
@@ -132,7 +132,7 @@ export async function testGeminiConnection() {
                 success: true,
                 message: `Success! Gemini 2.5 Flash is working.\nResponse: "${response.text()}"\n\nAvailable Models: ${availableModelsList}`
             };
-        } catch (genError: any) {
+        } catch (genError: unknown) {
             // Step 3: If 2.5 fails, try 2.0 Flash
             try {
                 const model2 = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -140,16 +140,16 @@ export async function testGeminiConnection() {
                 const response2 = await result2.response;
                 return {
                     success: true,
-                    message: `Gemini 2.5 Flash FAILED (${genError.message}), but Gemini 2.0 Flash SUCCEEDED.\nResponse: "${response2.text()}"\n\nAvailable Models: ${availableModelsList}`
+                    message: `Gemini 2.5 Flash FAILED (${(genError as Error).message}), but Gemini 2.0 Flash SUCCEEDED.\nResponse: "${response2.text()}"\n\nAvailable Models: ${availableModelsList}`
                 };
-            } catch (flashError: any) {
+            } catch (flashError: unknown) {
                 return {
                     success: false,
-                    message: `ALL Attempts Failed.\n2.5 Error: ${genError.message}\n2.0 Error: ${flashError.message}\n\nAvailable Models: ${availableModelsList}`
+                    message: `ALL Attempts Failed.\n2.5 Error: ${(genError as Error).message}\n2.0 Error: ${(flashError as Error).message}\n\nAvailable Models: ${availableModelsList}`
                 };
             }
         }
-    } catch (e: any) {
-        return { success: false, message: "Critical Server Error: " + e.message };
+    } catch (e: unknown) {
+        return { success: false, message: "Critical Server Error: " + (e as Error).message };
     }
 }

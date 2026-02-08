@@ -9,14 +9,7 @@ import { Suspense } from 'react';
 import type { PlanetProps } from './planetSchema';
 
 const ALL_PLANETS: PlanetProps[] = [
-    { object: "planet", name: "Mercury", modelPath: "/bodies/mercury_planet.glb", correctOrbit: "mercury", scale: 1, autoHover: true, allowRotate: true },
-    { object: "planet", name: "Venus", modelPath: "/bodies/mars_planet.glb", correctOrbit: "venus", scale: 1, autoHover: true, allowRotate: true },
     { object: "planet", name: "Earth", modelPath: "/bodies/earth_planet.glb", correctOrbit: "earth", scale: 1, autoHover: true, allowRotate: true },
-    { object: "planet", name: "Mars", modelPath: "/bodies/mars_planet.glb", correctOrbit: "mars", scale: 1, autoHover: true, allowRotate: true },
-    { object: "planet", name: "Jupiter", modelPath: "/bodies/jupiter_planet.glb", correctOrbit: "jupiter", scale: 1, autoHover: true, allowRotate: true },
-    { object: "planet", name: "Saturn", modelPath: "/bodies/saturn_planet.glb", correctOrbit: "saturn", scale: 1, autoHover: true, allowRotate: true },
-    { object: "planet", name: "Uranus", modelPath: "/bodies/uranus_planet.glb", correctOrbit: "uranus", scale: 1, autoHover: true, allowRotate: true },
-    { object: "planet", name: "Neptune", modelPath: "/bodies/neptune_planet.glb", correctOrbit: "neptune", scale: 1, autoHover: true, allowRotate: true },
 ];
 
 export function PlanetGame() {
@@ -72,7 +65,7 @@ export function PlanetGame() {
                             gl={{ preserveDrawingBuffer: true }}
                         >
                             <Suspense fallback={null}>
-                                <Environment preset="sunset" />
+                                <Environment files="/venice_sunset_1k.hdr" />
                                 <ambientLight intensity={0.2} />
                                 <pointLight position={[0, 0, 0]} intensity={2} />
                                 <OrbitBoard />

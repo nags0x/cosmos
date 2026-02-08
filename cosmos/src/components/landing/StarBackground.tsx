@@ -27,7 +27,7 @@ export function StarBackground({ starColor = "#ffffff" }: StarBackgroundProps) {
         if (!ctx) return;
 
         let animationFrameId: number;
-        let stars: Star[] = [];
+        const stars: Star[] = [];
         let lastSpawnTime = Date.now();
         // High frequency spawn: 100ms - 400ms
         let nextSpawnDelay = Math.random() * 300 + 100;
@@ -125,7 +125,7 @@ export function StarBackground({ starColor = "#ffffff" }: StarBackgroundProps) {
             window.removeEventListener("resize", resize);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [starColor]);
 
     return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
 }

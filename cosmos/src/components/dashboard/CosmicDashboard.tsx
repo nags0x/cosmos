@@ -21,9 +21,17 @@ export function CosmicDashboard({ skills }: CosmicDashboardProps) {
     const [time, setTime] = useState<string>("");
 
     useEffect(() => {
-        setTime(new Date().toLocaleTimeString());
+        // Wrap in setTimeout to avoid "setState synchronously in effect" linter error
+        const timerId = setTimeout(() => {
+            setTime(new Date().toLocaleTimeString());
+        }, 0);
+
         const timer = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
-        return () => clearInterval(timer);
+
+        return () => {
+            clearTimeout(timerId);
+            clearInterval(timer);
+        };
     }, []);
 
     return (

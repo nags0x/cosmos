@@ -26,6 +26,21 @@ export interface McpPromptButtonProps extends React.ButtonHTMLAttributes<HTMLBut
   className?: string;
 }
 
+interface PromptMessage {
+  content: {
+    type: string;
+    text?: string;
+  };
+}
+
+interface ResourceEntry {
+  resource: {
+    uri: string;
+    name?: string;
+    description?: string;
+  };
+}
+
 /**
  * MCP Prompt picker button component for inserting prompts from MCP servers.
  * @component McpPromptButton
@@ -52,7 +67,7 @@ export const McpPromptButton = React.forwardRef<
     if (promptData && selectedPromptName) {
       // Extract the text from the prompt messages
       const promptText = promptData.messages
-        .map((msg) => {
+        .map((msg: PromptMessage) => {
           if (msg.content.type === "text") {
             return msg.content.text;
           }
@@ -131,11 +146,11 @@ function PromptListContent({
 }: {
   isLoading: boolean;
   promptList:
-    | {
-        server: { url: string };
-        prompt: { name: string; description?: string };
-      }[]
-    | undefined;
+  | {
+    server: { url: string };
+    prompt: { name: string; description?: string };
+  }[]
+  | undefined;
   onSelectPrompt: (name: string) => void;
 }) {
   if (isLoading) {
@@ -286,7 +301,7 @@ function ResourceListContent({
   }
   return (
     <>
-      {filteredResources.map((resourceEntry) => (
+      {filteredResources.map((resourceEntry: ResourceEntry) => (
         <DropdownMenu.Item
           key={resourceEntry.resource.uri}
           className="relative flex cursor-pointer select-none items-start flex-col rounded-sm px-2 py-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-accent focus:text-accent-foreground"
@@ -356,7 +371,7 @@ export const McpResourceButton = React.forwardRef<
     if (!searchQuery) return resourceList;
 
     const query = searchQuery.toLowerCase();
-    return resourceList.filter((entry) => {
+    return resourceList.filter((entry: ResourceEntry) => {
       const uri = entry.resource.uri.toLowerCase();
       const name = entry.resource.name?.toLowerCase() ?? "";
       const description = entry.resource.description?.toLowerCase() ?? "";

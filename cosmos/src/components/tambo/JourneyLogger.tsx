@@ -4,6 +4,14 @@ import { useEffect, useRef } from "react";
 import { useTambo } from "@tambo-ai/react";
 import { useJourneyStore } from "@/store/journey";
 
+interface Message {
+    role: string;
+    content: string | unknown;
+    toolCallRequest?: {
+        toolName: string;
+    };
+}
+
 export function JourneyLogger() {
     const { thread } = useTambo();
     const { incrementSession, addTime, logTopic } = useJourneyStore();
@@ -30,7 +38,7 @@ export function JourneyLogger() {
         const newMessages = thread.messages.slice(messagesLengthRef.current);
         messagesLengthRef.current = thread.messages.length;
 
-        newMessages.forEach(msg => {
+        newMessages.forEach((msg: Message) => {
             if (msg.role === 'assistant') {
                 // Infer topic from tool calls or simple keyword matching
                 // In a real app, the LLM could tag the topic explicitly

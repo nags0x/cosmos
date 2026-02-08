@@ -5,7 +5,7 @@ import { CloudMoon, Telescope, Star } from "lucide-react";
 export function ContextPanel() {
     return (
         <aside className="w-80 border-l border-white/5 bg-slate-900/30 p-6 hidden xl:block">
-            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Tonight's Sky</h3>
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Tonight&apos;s Sky</h3>
 
             <div className="space-y-4">
                 {/* Card 1 */}

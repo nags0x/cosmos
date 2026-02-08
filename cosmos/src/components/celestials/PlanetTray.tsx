@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useThree } from "@react-three/fiber";
+import { useThree, ThreeEvent } from "@react-three/fiber";
 import { PlanetObject } from "./PlanetObject";
 import { PlanetProps } from "./planetSchema";
 import { useGameStore } from "@/store/game";
@@ -16,7 +16,7 @@ export function PlanetTray(props: PlanetProps) {
     const baseScale = props.scale ?? 1;
     const responsiveScale = (Math.min(viewport.width, viewport.height) / 4) * baseScale; // Slightly larger in the tray
 
-    const handlePointerDown = (e: any) => {
+    const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
         e.stopPropagation();
         // Start dragging this planet
         setDraggingPlanet(props);

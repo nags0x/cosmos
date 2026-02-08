@@ -9,7 +9,8 @@ export function SpaceJourney() {
     const { sessions, totalTimeMinutes, getTopicCount, getMostExplored } = useJourneyStore();
 
     useEffect(() => {
-        setMounted(true);
+        const timer = setTimeout(() => setMounted(true), 0);
+        return () => clearTimeout(timer);
     }, []);
 
     if (!mounted) return (

@@ -49,9 +49,9 @@ async function fetchBriefingFromGemini(): Promise<BriefingData | null> {
                 `;
                 result = await model.generateContent(prompt);
                 break; // If successful, stop trying
-            } catch (e: any) {
-                console.warn(`Model ${modelName} failed:`, e.message);
-                lastError = e; // Store exact error object
+            } catch (e: unknown) {
+                console.warn(`Model ${modelName} failed:`, (e as Error).message);
+                lastError = e as Error; // Store exact error object
                 continue;
             }
         }
@@ -65,12 +65,12 @@ async function fetchBriefingFromGemini(): Promise<BriefingData | null> {
         const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
         return JSON.parse(jsonStr);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Gemini Briefing Fetch Error:", error);
         // Return the error to the UI so we can see what's wrong
         return {
             title: "System Alert: Connection Failed",
-            content: `Diagnostic: ${error.message || "Unknown Error"}. Timestamp: ${new Date().toLocaleTimeString()}`,
+            content: `Diagnostic: ${(error as Error).message || "Unknown Error"}. Timestamp: ${new Date().toLocaleTimeString()}`,
             source: "System Diagnostics",
             topic: "ERROR LOG"
         };

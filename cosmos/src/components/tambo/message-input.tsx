@@ -473,7 +473,7 @@ const MessageInputInternal = React.forwardRef<
     // On mount, load any stored draft value, but only if current value is empty
     const storedValue = getValueFromSessionStorage(thread.id);
     if (!storedValue) return;
-    setValue((value) => value ?? storedValue);
+    setValue((value: string) => value ?? storedValue);
   }, [setValue, thread.id]);
 
   React.useEffect(() => {
@@ -504,7 +504,7 @@ const MessageInputInternal = React.forwardRef<
         latestResourceNames = extracted.resourceNames;
       }
 
-      const imageIdsAtSubmitTime = images.map((image) => image.id);
+      const imageIdsAtSubmitTime = images.map((image: StagedImage) => image.id);
 
       try {
         await submit({
@@ -515,7 +515,7 @@ const MessageInputInternal = React.forwardRef<
         // Clear only the images that were staged when submission started so
         // any images added while the request was in-flight are preserved.
         if (imageIdsAtSubmitTime.length > 0) {
-          imageIdsAtSubmitTime.forEach((id) => removeImage(id));
+          imageIdsAtSubmitTime.forEach((id: string) => removeImage(id));
         }
         // Refocus the editor after a successful submission
         setTimeout(() => {
@@ -822,7 +822,8 @@ const MessageInputTextarea = ({
       const promptMessages = selectedMcpPromptData?.messages;
       if (promptMessages) {
         const promptText = promptMessages
-          .map((msg) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map((msg: any) => {
             if (msg.content?.type === "text") {
               return msg.content.text;
             }
@@ -1496,7 +1497,7 @@ const MessageInputStagedImages = React.forwardRef<
       data-slot="message-input-staged-images"
       {...props}
     >
-      {images.map((image, index) => (
+      {images.map((image: StagedImage, index: number) => (
         <ImageContextBadge
           key={image.id}
           image={image}

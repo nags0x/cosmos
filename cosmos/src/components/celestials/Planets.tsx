@@ -31,7 +31,7 @@ export function Planets(props: PlanetProps) {
                 camera={{ position: [0, 0, 7], fov: 45 }}
                 gl={{ preserveDrawingBuffer: true }}
             >
-                <Environment preset="sunset" />
+                <Environment files="/venice_sunset_1k.hdr" />
                 <ambientLight intensity={0.2} />
                 <pointLight position={[0, 0, 0]} intensity={2} />
 

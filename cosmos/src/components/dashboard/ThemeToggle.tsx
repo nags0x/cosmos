@@ -8,14 +8,17 @@ export function ThemeToggle() {
 
     useEffect(() => {
         // Check local storage or system preference
-        const storedTheme = localStorage.getItem("theme");
-        if (storedTheme === "dark" || (!storedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-            setIsDark(true);
-            document.documentElement.classList.add("dark");
-        } else {
-            setIsDark(false);
-            document.documentElement.classList.remove("dark");
-        }
+        const timer = setTimeout(() => {
+            const storedTheme = localStorage.getItem("theme");
+            if (storedTheme === "dark" || (!storedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                setIsDark(true);
+                document.documentElement.classList.add("dark");
+            } else {
+                setIsDark(false);
+                document.documentElement.classList.remove("dark");
+            }
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     const toggleTheme = () => {

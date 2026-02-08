@@ -5,20 +5,7 @@ import { motion } from "framer-motion";
 import { Settings, BookOpen, Layers } from "lucide-react";
 import { QuizConfig } from "./types";
 import { cn } from "@/lib/utils"; // Assuming cn is in lib/utils or similar, standard in modern stacks.
-// If cn is not there, I will handle it. Wait, I should check where cn is. 
-// Usually utils.ts. I'll check after this if build fails, but clsx/tailwind-merge are in use.
-// I'll inline a simple clsx/twMerge generic implementation or usage safe check.
-// Actually, I'll use simple class strings + template literals to be safe for now 
-// or import clsx directly if I'm not sure.
-// Package.json has clsx and tailwind-merge. 
-// I'll assume usage of standard `className` prop pattern.
 
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs));
-}
 
 interface QuizSetupCardProps {
     onStart: (config: QuizConfig) => void;

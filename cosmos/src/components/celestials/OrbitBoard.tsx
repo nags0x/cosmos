@@ -4,7 +4,7 @@
 import { useGameStore } from "@/store/game";
 import { PlanetObject } from "./PlanetObject";
 import { Line } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { useThree, ThreeEvent } from "@react-three/fiber";
 import { useState } from "react";
 
 const ORBITS = [
@@ -45,7 +45,7 @@ export function OrbitBoard() {
 
     const [dragPos, setDragPos] = useState<[number, number, number] | null>(null);
 
-    const droppedPlanet = (e: any) => {
+    const droppedPlanet = (e: ThreeEvent<PointerEvent>) => {
         if (!draggingPlanet) return;
         e.stopPropagation();
 
