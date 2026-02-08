@@ -1,60 +1,52 @@
-import { ApiKeyCheck } from "@/components/ApiKeyCheck";
-import Image from "next/image";
+import { StarBackground } from "@/components/landing/StarBackground";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen p-8 flex flex-col items-center justify-center font-[family-name:var(--font-geist-sans)]">
-      <main className="max-w-2xl w-full space-y-8">
-        <div className="flex flex-col items-center">
-          <a href="https://tambo.co" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="/Octo-Icon.svg"
-              alt="Tambo AI Logo"
-              width={80}
-              height={80}
-              className="mb-4"
-            />
-          </a>
-          <h1 className="text-4xl text-center">tambo analytics template</h1>
-        </div>
+    <div className="relative min-h-screen bg-gradient-to-b from-[#2b1f3a] to-[#0a0a0a] text-[#f0f0f0] overflow-hidden font-sans selection:bg-[#d2beff]/20">
 
-        <div className="w-full space-y-8">
-          <div className="bg-white px-8 py-4">
-            <h2 className="text-xl font-semibold mb-4">Setup Checklist</h2>
-            <ApiKeyCheck>
-              <div className="flex gap-4 flex-wrap">
-                <a
-                  href="/chat"
-                  className="px-6 py-3 rounded-md font-medium shadow-sm transition-colors text-lg mt-4 bg-[#7FFFC3] hover:bg-[#72e6b0] text-gray-800"
-                >
-                  Go to Chat →
-                </a>
-              </div>
-            </ApiKeyCheck>
+      {/* Background Layer: Stars & Noise */}
+      <StarBackground />
+      <div className="fixed inset-0 bg-[url('/noise.svg')] opacity-[0.03] pointer-events-none z-0 mix-blend-overlay"></div>
+
+      {/* Content Layer */}
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
+
+        {/* Focal Point */}
+        <div className="max-w-xl w-full text-center space-y-12 animate-in fade-in duration-1000 slide-in-from-bottom-4">
+
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-4xl font-light tracking-wide leading-relaxed text-[#f0f0f0]/90">
+              <span>COSMOS</span>
+            </h1>
+            <h2 className="text-2xl md:text-3xl font-light tracking-wide leading-relaxed text-[#f0f0f0]/90">
+              <span>A calm place to explore the universe.</span>
+            </h2>
+            <p className="text-sm md:text-base text-[#d2beff]/60 tracking-widest uppercase font-mono">
+              The Observatory is Open
+            </p>
           </div>
 
-          <div className="bg-white px-8 py-4">
-            <h2 className="text-xl font-semibold mb-4">How it works:</h2>
-            <p className="text-gray-600 mb-4">
-              This template demonstrates drag & drop analytics with AI-generated
-              components.
-            </p>
-            <p className="text-gray-600 mb-4">
-              Ask the AI to create charts and data visualizations, then drag
-              them onto the canvas for organization.
-            </p>
-            <div className="flex gap-4 flex-wrap mt-4">
-              <a
-                href="https://tambo.co/docs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 rounded-md font-medium transition-colors text-lg mt-4 border border-gray-300 hover:bg-gray-50"
-              >
-                View Docs
-              </a>
-            </div>
+          <div className="flex justify-center">
+            <Link
+              href="/dashboard"
+              className="group flex items-center gap-3 px-8 py-4 rounded-full border border-[#f0f0f0]/10 hover:border-[#d2beff]/30 bg-[#f0f0f0]/5 hover:bg-[#d2beff]/10 transition-all duration-500 backdrop-blur-sm"
+            >
+              <span className="text-sm font-medium tracking-wider text-[#f0f0f0]/80 group-hover:text-[#d2beff]">
+                Enter
+              </span>
+              <ArrowRight className="w-4 h-4 text-[#f0f0f0]/50 group-hover:text-[#d2beff] group-hover:translate-x-1 transition-all duration-500" />
+            </Link>
           </div>
+
         </div>
+
+        {/* Footer Whisper */}
+        <div className="absolute bottom-8 text-[10px] text-[#f0f0f0]/20 font-mono tracking-[0.2em] uppercase">
+          Tambo Space v2.0
+        </div>
+
       </main>
     </div>
   );
