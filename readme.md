@@ -1,7 +1,6 @@
-#Cosmos
-<video controls src="main.mp4" title="Title"></video>
-
 # Cosmos
+[Watch Demo Video](main.mp4)
+
 Ik hacks are filled with ai fluff, but this one is different
 It has taste, something which ai can't replicate but humans need to hit
 their brain or rather must have power to think gd designs - ig this has it
