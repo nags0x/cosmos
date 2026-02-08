@@ -1,0 +1,111 @@
+"use client";
+import { useMcpServers } from "@/components/tambo/mcp-config-modal";
+import { MessageThreadFull } from "@/components/tambo/message-thread-full";
+import ComponentsCanvas from "@/components/ui/components-canvas";
+import { InteractableCanvasDetails } from "@/components/ui/interactable-canvas-details";
+import { InteractableTabs } from "@/components/ui/interactable-tabs";
+import { components, tools } from "@/lib/tambo";
+import { TamboProvider } from "@tambo-ai/react";
+import { TamboMcpProvider } from "@tambo-ai/react/mcp";
+import { useSyncExternalStore } from "react";
+
+const STORAGE_KEY = "tambo-demo-context-key";
+
+function getContextKey(): string {
+  //this is the src of truth -> one uuid per browser storage but since the uuid is stored in the browser itself and react doesnt know it, so find it throw built in event listner
+  let key = localStorage.getItem(STORAGE_KEY);
+  if (!key) {
+    key = window.crypto.randomUUID();
+    console.log(key);
+    localStorage.setItem(STORAGE_KEY, key);
+  }
+  return key;
+}
+
+function subscribe(callback: () => void): () => void {
+  window.addEventListener("storage", callback); //the stoage event gets fired by browser on localstorage key deletion
+  return () => window.removeEventListener("storage", callback);
+}
+
+/**
+ * Gets or creates a unique context key for thread isolation.
+ *
+ * NOTE: For production, use `userToken` prop instead of `contextKey`.
+ * The userToken integrates with your auth provider (e.g., Better Auth, Clerk)
+ * for proper user isolation with token refresh handling.
+ *
+ * Example:
+ *   const userToken = useUserToken(); // from your auth provider
+ *   <TamboProvider userToken={userToken} ... />
+ */
+function useContextKey(): string | null { //custom-react-hook, called on render
+  return useSyncExternalStore(subscribe, getContextKey, () => null); //listen/read
+}
+
+/**
+ * Home page component that renders the Tambo chat interface.
+ *
+ * @remarks
+ * The `NEXT_PUBLIC_TAMBO_URL` environment variable specifies the URL of the Tambo server.
+ * You do not need to set it if you are using the default Tambo server.
+ * It is only required if you are running the API server locally.
+ *
+ * @see {@link https://github.com/tambo-ai/tambo/blob/main/CONTRIBUTING.md} for instructions on running the API server locally.
+ */
+
+/* whats happening :)
+//    When the external value (localStorage key) might have changed,
+// the browser fires an event →  subscribe’s callback runs →
+// React re-reads the value by calling getContextKey() →
+// if the value is different, React re-renders Home,
+// and useContextKey() returns the new key.
+//   if(typeof window == "undefined") return "";
+*/
+
+import { JourneyLogger } from "@/components/tambo/JourneyLogger";
+
+export default function Home() {
+  const mcpServers = useMcpServers();
+  const contextKey = useContextKey();
+
+  // Wait for contextKey to be loaded from localStorage
+  if (!contextKey) {
+    return null;
+  }
+
+  return (
+    <div className="h-screen flex flex-col overflow-hidden relative bg-gradient-to-b from-[#fffaf0] to-[#f3e5f5] text-[#2b1f3a]">
+
+      {/* Background stars removed as per request */}
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] pointer-events-none z-0 mix-blend-multiply"></div>
+
+      <TamboProvider
+        apiKey={process.env.NEXT_PUBLIC_TAMBO_API_KEY!}
+        tamboUrl={process.env.NEXT_PUBLIC_TAMBO_URL!}
+        components={components}
+        tools={tools}
+        mcpServers={mcpServers}
+        contextKey={contextKey}
+      >
+        <TamboMcpProvider>
+          <JourneyLogger />
+          <div className="flex h-full overflow-hidden">
+            <div className="flex-1 overflow-hidden">
+              <MessageThreadFull />
+            </div>
+            <div className="hidden md:block w-[60%] overflow-auto">
+              {/* Tabs interactable manages tabs state only */}
+              <InteractableTabs interactableId="Tabs" />
+
+              {/* Canvas details for active tab charts */}
+              <InteractableCanvasDetails interactableId="CanvasDetails" />
+
+              {/* Visual canvas renderer for the active tab */}
+              <ComponentsCanvas className="h-full" />
+            </div>
+          </div>
+        </TamboMcpProvider>
+      </TamboProvider>
+    </div>
+  );
+}
